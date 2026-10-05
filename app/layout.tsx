@@ -12,8 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+
 export const metadata: Metadata = {
-  metadataBase: new URL('/'),
+  metadataBase: new URL(siteUrl),
   title: { default: 'Akito Iuchi | Portfolio', template: '%s | Akito Iuchi' },
   description: '井内秋斗のポートフォリオです。',
   openGraph: {
