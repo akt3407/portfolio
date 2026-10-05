@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # package.jsonのpackageManagerを読んでpnpmを入れる
       # （ここでversionを指定すると、packageManagerと食い違ってエラーになる）
@@ -40,7 +40,7 @@ jobs:
     env:
       HUSKY: 0
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v4
         with:
