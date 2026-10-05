@@ -1,10 +1,44 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: /
+  # GitHub Actions(checkout, setup-node など)
+  - package-ecosystem: 'github-actions'
+    directory: '/'
     schedule:
-      interval: weekly
-  - package-ecosystem: github-actions
-    directory: /
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    groups:
+      actions:
+        patterns: ['*']
+
+  # pnpm(Dependabot では "npm" を指定。pnpm-lock.yaml は自動検出されます)
+  - package-ecosystem: 'npm'
+    directory: '/'
     schedule:
-      interval: monthly
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Asia/Tokyo'
+    open-pull-requests-limit: 5
+    ignore:
+      # 型定義は実行するNodeのメジャー(24)に合わせて手動で上げる
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
+    groups:
+      next-react:
+        patterns:
+          - 'next'
+          - 'eslint-config-next'
+          - 'react'
+          - 'react-dom'
+          - '@types/react'
+          - '@types/react-dom'
+      tailwind:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'postcss'
+      dev-dependencies:
+        dependency-type: 'development'
+        update-types: ['minor', 'patch']
