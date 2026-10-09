@@ -1,0 +1,119 @@
+{
+  "id": "work",
+  "name": "制作実績",
+  "endpoint": "work",
+  "kind": "list",
+  "fields": [
+    {
+      "fieldId": "slug",
+      "name": "id",
+      "kind": "text",
+      "description": null,
+      "required": false,
+      "textSizeLimitValidation": null,
+      "patternMatchValidation": null,
+      "isUnique": false,
+      "initialValue": null
+    },
+    {
+      "fieldId": "sitetype",
+      "name": "種類",
+      "kind": "text",
+      "description": null,
+      "required": false,
+      "textSizeLimitValidation": null,
+      "patternMatchValidation": null,
+      "isUnique": false,
+      "initialValue": null
+    },
+    {
+      "fieldId": "title",
+      "name": "タイトル",
+      "kind": "text",
+      "description": null,
+      "required": true,
+      "textSizeLimitValidation": null,
+      "patternMatchValidation": null,
+      "isUnique": false,
+      "initialValue": null
+    },
+    {
+      "fieldId": "year",
+      "name": "制作年",
+      "kind": "number",
+      "description": null,
+      "required": true,
+      "numberSizeLimitValidation": null,
+      "initialValue": null
+    },
+    {
+      "fieldId": "role",
+      "name": "役割",
+      "kind": "text",
+      "description": null,
+      "required": true,
+      "textSizeLimitValidation": null,
+      "patternMatchValidation": null,
+      "isUnique": false,
+      "initialValue": null
+    },
+    {
+      "fieldId": "image",
+      "name": "画像",
+      "kind": "media",
+      "description": null,
+      "required": false,
+      "imageSizeValidation": null,
+      "initialValue": null
+    },
+    {
+      "fieldId": "video",
+      "name": "動画",
+      "kind": "text",
+      "description": null,
+      "required": false,
+      "textSizeLimitValidation": null,
+      "patternMatchValidation": null,
+      "isUnique": false,
+      "initialValue": null
+    },
+    {
+      "fieldId": "detail",
+      "name": "詳細",
+      "kind": "richEditorV2",
+      "description": null,
+      "required": false,
+      "richEditorV2Options": [
+        "headerOne",
+        "headerTwo",
+        "headerThree",
+        "headerFour",
+        "headerFive",
+        "paragraph",
+        "bold",
+        "italic",
+        "underline",
+        "strike",
+        "code",
+        "blockquote",
+        "codeBlock",
+        "listBullet",
+        "listOrdered",
+        "link",
+        "image",
+        "file",
+        "table",
+        "horizontalRule",
+        "textAlign",
+        "customClass",
+        "oembedly",
+        "color",
+        "size"
+      ],
+      "richEditorV2ColorList": [],
+      "richEditorV2HideColorPicker": false,
+      "richEditorV2FontSizeList": [],
+      "customClassList": []
+    }
+  ]
+}

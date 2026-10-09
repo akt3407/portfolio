@@ -21,7 +21,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@components/*": ["./components/*"],
+      "@lib/*": ["./lib/*"],
+      "@config/*": ["./config/*"],
+      "@constans/*": ["./constants/*"]
     }
   },
   "include": [
