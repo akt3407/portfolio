@@ -4,6 +4,7 @@ import Footer from '@components/layout/footer'
 import Header from '@components/layout/header'
 import type { Metadata } from 'next'
 import { Akt, Zen_Kaku_Gothic_Antique } from 'next/font/google'
+import { Suspense } from 'react'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="ja" className={`${akt.variable} ${zenKakuGothicAntique.variable}`}>
       <body className="flex min-h-full flex-col">
-        <Header />
+        <Suspense fallback={<div style={{ height: 64 }} aria-hidden />}>
+          <Header />
+        </Suspense>
         {children}
         <Footer />
       </body>

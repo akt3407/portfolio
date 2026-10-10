@@ -19,7 +19,7 @@ export default function WorkNav({ works, active, onSelect, onNext, paused }: Wor
               type="button"
               aria-current={i === active ? 'true' : undefined}
               onClick={() => onSelect(i)}
-              className="relative block min-w-29.5 border-b border-orange-300 pb-1.5 text-left text-fluid-xs/none text-orange-300 transition-colors duration-700 aria-current:text-primary"
+              className="text-fluid-xs/none relative block min-w-29.5 border-b border-orange-300 pb-1.5 text-left text-orange-300 transition-colors duration-700 aria-current:text-primary"
             >
               {work.title}
               {i === active && (

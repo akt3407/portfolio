@@ -9,7 +9,6 @@ import { useEffect, useRef, useState, ViewTransition } from 'react'
 import type { IUniform, Texture } from 'three'
 
 import { handOffVideo, videoTransition } from '../works/_components/WorkVideo'
-
 gsap.registerPlugin(useGSAP)
 
 // 波が画像の左端から右端へ抜けるまでの秒数
