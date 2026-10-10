@@ -1,12 +1,11 @@
 'use client'
 
-import { useGSAP } from '@gsap/react'
 import type { Work } from '@lib/microcms'
 import gsap from 'gsap'
 import { ScrambleTextPlugin } from 'gsap/ScrambleTextPlugin'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
-gsap.registerPlugin(useGSAP, ScrambleTextPlugin)
+gsap.registerPlugin(ScrambleTextPlugin)
 
 interface WorkItemProps {
   work: Work
@@ -29,39 +28,37 @@ export default function WorkItem({ work, index }: WorkItemProps) {
   // 初回表示（と開発時の StrictMode の再実行）ではスクランブルさせない
   const shown = useRef(index)
 
-  useGSAP(
-    () => {
-      if (shown.current === index) return
-      shown.current = index
+  useEffect(() => {
+    if (shown.current === index) return
+    shown.current = index
 
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      gsap.utils.toArray<HTMLElement>('[data-scramble]', container.current).forEach((el) => {
-        const text = el.dataset.scramble!
-        gsap.to(el, {
-          duration: reduce ? 0 : 1.75,
-          overwrite: true,
-          scrambleText: { text, chars: 'upperCase' },
-        })
-      })
-    },
-    { dependencies: [work, index], scope: container },
-  )
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const tweens = gsap.utils.toArray<HTMLElement>('[data-scramble]', container.current).map((el) =>
+      gsap.to(el, {
+        duration: reduce ? 0 : 1.75,
+        scrambleText: { text: el.dataset.scramble!, chars: 'upperCase' },
+      }),
+    )
+    // 作品の切り替え・ページ離脱（Activity で隠れる時も含む）では revert せず最後まで進める。
+    // useGSAP の revert だと文字が開始前に戻り、Home に戻ったとき作品とズレたまま止まる
+    return () => tweens.forEach((tween) => tween.progress(1))
+  }, [index])
 
   return (
     <div ref={container} className="mt-2 flex justify-between">
       <div className="flex items-start gap-1">
-        <small data-scramble={texts.index} className="text-fluid-xs/none">
+        <small data-scramble={texts.index} className="text-xs">
           {first.index}
         </small>
-        <h2 data-scramble={texts.title} className="text-fluid-slg/none">
+        <h2 data-scramble={texts.title} className="text-fluid-slg">
           {first.title}
         </h2>
       </div>
       <div>
-        <p data-scramble={texts.year} className="text-right text-fluid-xs/none">
+        <p data-scramble={texts.year} className="text-right text-xs">
           {first.year}
         </p>
-        <p data-scramble={texts.role} className="mt-1 text-fluid-xs/none">
+        <p data-scramble={texts.role} className="mt-1 text-xs">
           {first.role}
         </p>
       </div>

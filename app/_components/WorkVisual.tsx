@@ -86,14 +86,17 @@ export default function WorkVisual({
   useEffect(() => {
     let disposed = false
     let dispose = () => {}
+    // 読み込み中に unmount されると ref が null になるので、要素は先に取っておく
+    const root = container.current!
+    const el = canvas.current!
 
     ;(async () => {
       const THREE = await import('three')
-      const imgs = Array.from(container.current!.querySelectorAll('img'))
+      const imgs = Array.from(root.querySelectorAll('img'))
       await Promise.all(imgs.map((img) => img.decode()))
       if (disposed) return
 
-      const renderer = new THREE.WebGLRenderer({ canvas: canvas.current! })
+      const renderer = new THREE.WebGLRenderer({ canvas: el })
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
       const textures = imgs.map((img) => {
@@ -113,7 +116,6 @@ export default function WorkVisual({
       const camera = new THREE.Camera()
       const render = () => renderer.render(mesh, camera)
 
-      const el = canvas.current!
       const observer = new ResizeObserver(() => {
         renderer.setSize(el.clientWidth, el.clientHeight, false)
         render()
@@ -198,8 +200,9 @@ export default function WorkVisual({
       <div
         ref={container}
         className="relative grid"
-        // タッチ端末のタップでは出さない
-        onPointerEnter={(e) => e.pointerType === 'mouse' && onHoverChange(true)}
+        // タッチ端末のタップでは出さない。
+        // pointerenter は Home に戻った時など止まったカーソルの下に再表示されただけでも発火するので、実際に動かした時だけ出す
+        onPointerMove={(e) => e.pointerType === 'mouse' && onHoverChange(true)}
         onPointerLeave={() => onHoverChange(false)}
       >
         {/* ホバー中は画像を消して動画だけ見せる */}
