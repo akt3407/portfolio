@@ -38,7 +38,11 @@ function Showcase({ works }: WorkShowcaseProps) {
   return (
     <>
       <article>
-        <Link href={`/works/${works[active]!.id}`}>
+        <Link
+          href={`/works/${works[active]!.slug}`}
+          // 動画が出ている時のクリックだけ、動画を詳細ページへ移動させる（WorkVideo の videoTransition）
+          transitionTypes={hovered ? ['work-open'] : undefined}
+        >
           <WorkVisual
             works={works}
             active={active}
