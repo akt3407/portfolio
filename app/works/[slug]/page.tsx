@@ -1,3 +1,4 @@
+
 import { getAllWorks } from '@lib/microcms-client'
 import type { Metadata } from 'next'
 
@@ -14,3 +15,4 @@ export default async function Works() {
     </main>
   )
 }
+
