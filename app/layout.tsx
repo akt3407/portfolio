@@ -22,7 +22,7 @@ const zenKakuGothicAntique = Zen_Kaku_Gothic_Antique({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: { default: 'Akito Iuchi | Portfolio', template: '%s | Akito Iuchi' },
+  title: { default: 'Home | Akito Iuchi | Portfolio', template: '%s | Akito Iuchi | Portfolio' },
   description: '井内秋斗のポートフォリオです。',
   openGraph: {
     title: 'Akito Iuchi | Portfolio',
