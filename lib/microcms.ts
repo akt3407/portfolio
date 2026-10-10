@@ -1,5 +1,5 @@
 // このファイルは自動生成されています。手動で編集しないでください。
-// Generated at: 2026-10-09T06:31:59.533Z
+// Generated at: 2026-10-09T08:45:25.516Z
 
 import type { MicroCMSDate, MicroCMSImage } from 'microcms-js-sdk'
 
