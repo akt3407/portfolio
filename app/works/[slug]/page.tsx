@@ -1,8 +1,7 @@
-
 import { getAllWorks } from '@lib/microcms-client'
 import type { Metadata } from 'next'
 
-import WorkList from './_components/WorkList'
+import WorkList from '../_components/WorkList'
 
 export const metadata: Metadata = { title: 'Works' }
 
@@ -15,4 +14,3 @@ export default async function Works() {
     </main>
   )
 }
-
