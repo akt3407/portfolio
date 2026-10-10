@@ -30,28 +30,18 @@
   --font-en: var(--font-akt), system-ui, sans-serif;
   --font-ja: var(--font-zen-kaku), system-ui, sans-serif;
 
-  /* 文字サイズ（text-fluid-*）。16px 以下は固定、lg 以上は上限・下限とも 8 の倍数。
-           行間は日本語向けに広め */
-  --text-fluid-xs: 0.75rem; /* 12px 固定（注釈・ラベルなど短い補足用） */
-  --text-fluid-xs--line-height: 1.7;
-  --text-fluid-sm: 0.875rem; /* 14px 固定（8 の倍数の例外。8px では小さすぎるため） */
-  --text-fluid-sm--line-height: 1.7;
+  /* 文字サイズ（text-fluid-*）。16px 以下は固定、lg 以上は上限・下限とも 8 の倍数。行間は日本語向けに広め */
+  --text-xs: 0.75rem; /* 12px 固定（注釈・ラベルなど短い補足用） */
+  --text-sm: 0.875rem; /* 14px 固定（8 の倍数の例外。8px では小さすぎるため） */
   --text-fluid-base: 1rem; /* 16px 固定 */
-  --text-fluid-base--line-height: 1.8;
+  --text-fluid-l: clamp(1rem, 0.956rem + 0.19vw, 1.125rem); /* 16px → 18px */
   --text-fluid-lg: clamp(1rem, 0.793rem + 0.884vw, 1.5rem); /* 16px → 24px */
-  --text-fluid-lg--line-height: 1.7;
   --text-fluid-slg: clamp(1.25rem, 1.074rem + 0.75vw, 1.75rem); /* 20px → 28px */
   --text-fluid-xl: clamp(1.5rem, 1.293rem + 0.884vw, 2rem); /* 24px → 32px */
-  --text-fluid-xl--line-height: 1.5;
   --text-fluid-2xl: clamp(1.5rem, 1.086rem + 1.768vw, 2.5rem); /* 24px → 40px */
-  --text-fluid-2xl--line-height: 1.4;
   --text-fluid-3xl: clamp(2rem, 1.586rem + 1.768vw, 3rem); /* 32px → 48px */
-  --text-fluid-3xl--line-height: 1.35;
   --text-fluid-4xl: clamp(2rem, 1.378rem + 2.652vw, 3.5rem); /* 32px → 56px */
-  --text-fluid-4xl--line-height: 1.3;
-  /* ヒーロー見出し用。これだけ 375px → 1920px の範囲で伸びる */
   --text-fluid-hero: clamp(2.5rem, 1.893rem + 2.589vw, 5rem); /* 40px → 80px */
-  --text-fluid-hero--line-height: 1.2;
 
   /* 余白（p-*, m-*, gap-* などで使える） */
   /* 左右の余白：16px → 40px */
@@ -129,7 +119,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-size: var(--text-fluid-base);
-    line-height: var(--text-fluid-base--line-height);
+    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     /* 日本語の禁則処理を厳格に、長いURLなどははみ出さず折り返す */
