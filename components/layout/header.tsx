@@ -72,7 +72,7 @@ export default function Header() {
                 href={href}
                 aria-current={pathname === href ? 'page' : undefined}
                 className={cn(
-                  'text-fluid-xs/[0.9] block text-orange-300 uppercase',
+                  'block text-xs/[0.9] text-orange-300 uppercase',
                   'aria-[current=page]:text-primary',
                   'before:mr-1 before:content-["{"/""] after:ml-1 after:content-["}"/""]',
                   'aria-[current=page]:before:mr-10 aria-[current=page]:after:ml-10',
