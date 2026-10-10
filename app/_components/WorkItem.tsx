@@ -46,14 +46,9 @@ export default function WorkItem({ work, index }: WorkItemProps) {
 
   return (
     <div ref={container} className="mt-2 flex justify-between">
-      <div className="flex items-start gap-1">
-        <small data-scramble={texts.index} className="text-xs">
-          {first.index}
-        </small>
-        <h2 data-scramble={texts.title} className="text-fluid-slg">
-          {first.title}
-        </h2>
-      </div>
+      <h2 data-scramble={texts.title} className="text-fluid-slg">
+        {first.title}
+      </h2>
       <div>
         <p data-scramble={texts.year} className="text-right text-xs">
           {first.year}

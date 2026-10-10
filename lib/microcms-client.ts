@@ -8,7 +8,7 @@ const client = createClient({
   apiKey: process.env.MICROCMS_API_KEY!,
 })
 
-export async function getWorks(limit?: number) {
+export async function getWorks(limit = 100) {
   'use cache'
   cacheTag('works')
   cacheLife('hours')
@@ -17,7 +17,7 @@ export async function getWorks(limit?: number) {
     endpoint: 'work',
     queries: {
       limit,
-      fields: 'id,slug,title,year,role,image,video',
+      fields: 'id,slug,sitetype,title,year,role,image,video',
       filters: 'image[exists]',
     },
   })
@@ -25,3 +25,27 @@ export async function getWorks(limit?: number) {
 }
 
 export type WorkContent = Awaited<ReturnType<typeof getWorks>>[number]
+
+// works 一覧・詳細ページ用。画像の有無を問わず全件取る
+export async function getAllWorks() {
+  'use cache'
+  cacheTag('works')
+  cacheLife('hours')
+  return client.getAllContents<Work>({
+    endpoint: 'work',
+    queries: { fields: 'id,slug,sitetype,title,year,role,image,video' },
+  })
+}
+
+export type WorkListItem = Awaited<ReturnType<typeof getAllWorks>>[number]
+
+export async function getWork(slug: string) {
+  'use cache'
+  cacheTag('works')
+  cacheLife('hours')
+  const { contents } = await client.getList<Work>({
+    endpoint: 'work',
+    queries: { limit: 1, filters: `slug[equals]${slug}` },
+  })
+  return contents[0]
+}
