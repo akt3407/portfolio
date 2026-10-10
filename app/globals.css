@@ -1,60 +1,47 @@
 /* ==========================================================================
-   Astro × Tailwind CSS v4 スターター設定
-   流体レイアウト / 折りたたみ端末 / ダークモード / 日本語組版 / a11y 対応
+   Next.js × Tailwind CSS v4 スターター設定
+   流体レイアウト / 折りたたみ端末 / 日本語組版 / a11y 対応
+   配置先: src/app/globals.css
    ========================================================================== */
 @import 'tailwindcss';
 @import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
 
 /* --------------------------------------------------------------------------
-      1. ダークモード
-      OSの設定に自動で追従し、<html data-theme="light|dark"> で手動上書きもできる。
-      -------------------------------------------------------------------------- */
-@custom-variant dark {
-  &:where([data-theme='dark'], [data-theme='dark'] *) {
-    @slot;
-  }
-  @media (prefers-color-scheme: dark) {
-    &:where(:not([data-theme='light'], [data-theme='light'] *)) {
-      @slot;
-    }
-  }
-}
+         1. ダークモード無効化
+         Tailwind v4 のデフォルトの dark: は OS の prefers-color-scheme に反応するため、
+         定義を消すと OS がダークの人だけ表示が崩れる。
+         そこで「.dark クラスの子孫」にだけ効く定義を1行残す。
+         .dark クラスはどこにも付けないので、dark: は実質どこにも効かない。
+         -------------------------------------------------------------------------- */
+@custom-variant dark (&:is(.dark *));
 
 /* --------------------------------------------------------------------------
-      2. デザイントークン
-      流体値は 375px → 1280px の間で線形に変化し、その外側では固定（hero のみ 1920px まで）。
-      コメントの px はルート文字サイズ 16px 時の値。
-      rem + vw の組み合わせなので、ユーザーの文字サイズ設定やズームも効く。
-      -------------------------------------------------------------------------- */
+         2. デザイントークン
+         流体値は 375px → 1280px の間で線形に変化し、その外側では固定（hero のみ 1920px まで）。
+         コメントの px はルート文字サイズ 16px 時の値。
+         rem + vw の組み合わせなので、ユーザーの文字サイズ設定やズームも効く。
+         -------------------------------------------------------------------------- */
 @theme {
   /* フォント：日本語システムフォント */
   --font-sans:
-    ui-sans-serif, system-ui, -apple-system, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN',
-    'Noto Sans JP', 'Yu Gothic UI', Meiryo, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-    'Noto Color Emoji';
+    var(--font-akt), var(--font-zen-kaku), ui-sans-serif, system-ui, -apple-system, 'Hiragino Sans',
+    'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic UI', Meiryo, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+  --font-en: var(--font-akt), system-ui, sans-serif;
+  --font-ja: var(--font-zen-kaku), system-ui, sans-serif;
 
-  /* 文字サイズ（text-fluid-*）。16px 以下は固定、lg 以上は上限・下限とも 8 の倍数。
-        行間は日本語向けに広め */
-  --text-fluid-xs: 0.75rem; /* 12px 固定（注釈・ラベルなど短い補足用） */
-  --text-fluid-xs--line-height: 1.7;
-  --text-fluid-sm: 0.875rem; /* 14px 固定（8 の倍数の例外。8px では小さすぎるため） */
-  --text-fluid-sm--line-height: 1.7;
+  /* 文字サイズ（text-fluid-*）。16px 以下は固定、lg 以上は上限・下限とも 8 の倍数。行間は日本語向けに広め */
+  --text-xs: 0.75rem; /* 12px 固定（注釈・ラベルなど短い補足用） */
+  --text-sm: 0.875rem; /* 14px 固定（8 の倍数の例外。8px では小さすぎるため） */
   --text-fluid-base: 1rem; /* 16px 固定 */
-  --text-fluid-base--line-height: 1.8;
+  --text-fluid-l: clamp(1rem, 0.956rem + 0.19vw, 1.125rem); /* 16px → 18px */
   --text-fluid-lg: clamp(1rem, 0.793rem + 0.884vw, 1.5rem); /* 16px → 24px */
-  --text-fluid-lg--line-height: 1.7;
+  --text-fluid-slg: clamp(1.25rem, 1.074rem + 0.75vw, 1.75rem); /* 20px → 28px */
   --text-fluid-xl: clamp(1.5rem, 1.293rem + 0.884vw, 2rem); /* 24px → 32px */
-  --text-fluid-xl--line-height: 1.5;
   --text-fluid-2xl: clamp(1.5rem, 1.086rem + 1.768vw, 2.5rem); /* 24px → 40px */
-  --text-fluid-2xl--line-height: 1.4;
   --text-fluid-3xl: clamp(2rem, 1.586rem + 1.768vw, 3rem); /* 32px → 48px */
-  --text-fluid-3xl--line-height: 1.35;
   --text-fluid-4xl: clamp(2rem, 1.378rem + 2.652vw, 3.5rem); /* 32px → 56px */
-  --text-fluid-4xl--line-height: 1.3;
-  /* ヒーロー見出し用。これだけ 375px → 1920px の範囲で伸びる */
   --text-fluid-hero: clamp(2.5rem, 1.893rem + 2.589vw, 5rem); /* 40px → 80px */
-  --text-fluid-hero--line-height: 1.2;
 
   /* 余白（p-*, m-*, gap-* などで使える） */
   /* 左右の余白：16px → 40px */
@@ -71,109 +58,48 @@
   --spacing-fluid-lg: clamp(1.5rem, 0.878rem + 2.652vw, 3rem);
   /* 40px → 80px */
   --spacing-fluid-xl: clamp(2.5rem, 1.464rem + 4.42vw, 5rem);
+  /* カラムグリッドの間隔（layout-grid 用）：16px → 24px */
+  --spacing-grid-gap: clamp(1rem, 0.793rem + 0.884vw, 1.5rem);
 
   /* コンテンツ幅（max-w-content / wrapper-narrow などで使える） */
   --container-content: 72rem;
   --container-narrow: 42rem;
+
+  /* トップの作品切り替え：1件の表示時間＝WorkNav のボーダーが埋まる時間 */
+  --animate-work-progress: work-progress 10s linear;
+  @keyframes work-progress {
+    from {
+      transform: scaleX(0);
+    }
+  }
 }
 
 /* --------------------------------------------------------------------------
-      3. 色（セマンティックトークン）
-      light-dark() で明暗を1行で定義。マークアップに dark: を書かなくても
-      bg-background / text-foreground などが自動で切り替わる。
-      -------------------------------------------------------------------------- */
+         3. 色（セマンティックトークン）
+         bg-background / text-foreground などのクラスで使う。
+         ライトテーマのみ。
+         -------------------------------------------------------------------------- */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-surface: var(--surface);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --font-heading: var(--font-sans);
-  --font-sans: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
-}
-
-:root {
-  color-scheme: light dark;
-  --muted: oklch(0.97 0 0);
-  --surface: light-dark(var(--color-zinc-50), var(--color-zinc-900));
-  --border: oklch(0.922 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
-
-:root[data-theme='light'] {
-  color-scheme: light;
-}
-
-:root[data-theme='dark'] {
-  color-scheme: dark;
+  --color-background: oklch(0.196 0 0); /* #151515 */
+  --color-foreground: oklch(0.67 0.22 38); /* #FE5100 */
+  --color-primary: oklch(0.67 0.22 38); /* #FE5100 */
+  --color-primary-foreground: oklch(1 0 0); /* #FFFFFF */
+  --color-white: oklch(1 0 0); /* #FFFFFF */
+  --color-orange-50: oklch(0.9675 0.0172 44.81); /* #FFF1EB */
+  --color-orange-100: oklch(0.9259 0.0416 48.25); /* #FFDFCF */
+  --color-orange-200: oklch(0.8645 0.0783 45.35); /* #FFC3A8 */
+  --color-orange-300: oklch(0.8023 0.1214 46.07); /* #FFA57A */
+  --color-orange-400: oklch(0.7319 0.1714 44.2); /* #FF7E40 */
+  --color-orange-500: oklch(0.67 0.2196 37.95); /* #FE5100 */
+  --color-orange-600: oklch(0.594 0.1957 37.71); /* #D94300 */
+  --color-orange-700: oklch(0.505 0.1651 38.06); /* #AE3500 */
+  --color-orange-800: oklch(0.4027 0.1277 39.51); /* #7E2700 */
+  --color-orange-900: oklch(0.2905 0.087 42.39); /* #4D1800 */
 }
 
 /* --------------------------------------------------------------------------
-      4. ベーススタイル
-      -------------------------------------------------------------------------- */
+         4. ベーススタイル
+         -------------------------------------------------------------------------- */
 @layer base {
   html {
     /* 固定ヘッダーがある場合は --header-height を定義するとアンカー位置がずれない */
@@ -193,7 +119,7 @@
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-size: var(--text-fluid-base);
-    line-height: var(--text-fluid-base--line-height);
+    line-height: 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     /* 日本語の禁則処理を厳格に、長いURLなどははみ出さず折り返す */
@@ -213,15 +139,6 @@
   :where(p, li, dd, figcaption, blockquote) {
     /* 最終行に1文字だけ残る「泣き別れ」を防ぐ（対応ブラウザのみ） */
     text-wrap: pretty;
-  }
-
-  /* v4 はボーダー色の初期値が currentColor なので、トークンの色に戻す */
-  *,
-  ::before,
-  ::after,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-border);
   }
 
   /* v4 はボタンのカーソルが default なので pointer に戻す */
@@ -247,17 +164,14 @@
       scroll-behavior: auto !important;
     }
   }
-  * {
-    @apply border-border outline-ring/50;
-  }
 }
 
 /* --------------------------------------------------------------------------
-      5. レイアウト用ユーティリティ
-      -------------------------------------------------------------------------- */
+         5. レイアウト用ユーティリティ
+         -------------------------------------------------------------------------- */
 
 /* 中央寄せ + 流体の左右余白（セーフエリアにも対応）
-      使い方: class="wrapper" / 幅を変えるなら class="wrapper wrapper-narrow" */
+         使い方: class="wrapper" / 幅を変えるなら class="wrapper wrapper-narrow" */
 @utility wrapper {
   width: 100%;
   max-width: calc(var(--wrapper-max, var(--container-content)) + var(--spacing-gutter) * 2);
@@ -270,8 +184,30 @@
   --wrapper-max: --value(--container-*, [length]);
 }
 
+/* 12 / 4 カラムグリッド
+         PC（md = 768px 以上）は 12 列、SP（768px 未満）は 4 列。間隔は 16px → 24px の流体。
+         子要素の幅は Tailwind 標準の col-span-* / col-start-* で指定する。
+         SP は 4 列しかないので、5 以上の col-span は md: を付けて書くこと。
+         使い方:
+           <div class="wrapper layout-grid">
+             <div class="col-span-4 md:col-span-6">SP は全幅、PC は半分</div>
+             <div class="col-span-2 md:col-span-3">SP は半分、PC は 4 分の 1</div>
+             <div class="col-span-full">常に全幅</div>
+           </div>
+         content-grid の中で使う場合は、子として <div class="layout-grid"> を置く。 */
+@utility layout-grid {
+  --grid-cols: 4;
+  display: grid;
+  grid-template-columns: repeat(var(--grid-cols), minmax(0, 1fr));
+  gap: var(--spacing-grid-gap);
+
+  @media (width >= theme(--breakpoint-md)) {
+    --grid-cols: 12;
+  }
+}
+
 /* 子要素は中央のコンテンツ幅に並び、.full-bleed を付けた子だけ画面幅いっぱいになる
-      使い方: <main class="content-grid"> <section class="full-bleed"> */
+         使い方: <main class="content-grid"> <section class="full-bleed"> */
 @utility content-grid {
   display: grid;
   grid-template-columns:
@@ -293,8 +229,8 @@
   grid-column: full;
 }
 
-/* ブレイクポイントなしで列数が自動で変わるグリッド
-      使い方: class="auto-grid" / 1列の最小幅を変えるなら auto-grid-xs, auto-grid-[15rem] */
+/* ブレイクポイントなしで列数が自動で変わるグリッド（カード一覧など、列数を固定しない場合用）
+         使い方: class="auto-grid" / 1列の最小幅を変えるなら auto-grid-xs, auto-grid-[15rem] */
 @utility auto-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--auto-grid-min, 18rem)), 1fr));
@@ -302,38 +238,4 @@
 
 @utility auto-grid-* {
   --auto-grid-min: --value(--container-*, [length]);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }
