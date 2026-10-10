@@ -5,8 +5,10 @@ import type { WorkContent } from '@lib/microcms-client'
 import { cn } from '@lib/utils'
 import gsap from 'gsap'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, ViewTransition } from 'react'
 import type { IUniform, Texture } from 'three'
+
+import { handOffVideo, videoTransition } from '../works/_components/WorkVideo'
 
 gsap.registerPlugin(useGSAP)
 
@@ -204,6 +206,8 @@ export default function WorkVisual({
         // pointerenter は Home に戻った時など止まったカーソルの下に再表示されただけでも発火するので、実際に動かした時だけ出す
         onPointerMove={(e) => e.pointerType === 'mouse' && onHoverChange(true)}
         onPointerLeave={() => onHoverChange(false)}
+        // 外側の Link で詳細ページへ移る時に、動画をこの再生位置から続ける
+        onClick={() => handOffVideo(video.current!.currentTime)}
       >
         {/* ホバー中は画像を消して動画だけ見せる */}
         <div
@@ -230,19 +234,21 @@ export default function WorkVisual({
             className={cn('absolute inset-0 size-full', !ready && 'invisible')}
           />
         </div>
-        <video
-          ref={video}
-          src={work.video}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          aria-hidden="true"
-          className={cn(
-            'absolute inset-0 z-10 m-auto size-4/5 object-contain opacity-0 transition-opacity duration-500',
-            hovered && 'opacity-100',
-          )}
-        />
+        <ViewTransition {...videoTransition(work.slug!)}>
+          <video
+            ref={video}
+            src={work.video}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-hidden="true"
+            className={cn(
+              'absolute inset-0 z-10 m-auto size-4/5 object-contain opacity-0 transition-opacity duration-500',
+              hovered && 'opacity-100',
+            )}
+          />
+        </ViewTransition>
       </div>
     </>
   )
